@@ -43,7 +43,6 @@ services:
       ports:
         - "5434:5432"
       volumes:
-        - /home/ilya/VsCodeProjects/Intas_test/docker/postgres:/var/lib/postgres
         - /home/ilya/VsCodeProjects/Intas_test/logs/pgsql:/var/log/pgsql
       networks:
         - internal
