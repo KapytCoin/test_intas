@@ -1,0 +1,15 @@
+{
+    "name": "ilya/intas_test",
+    "autoload": {
+        "psr-4": {
+            "Ilya\\IntasTest\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Ilya Latypov",
+            "email": "ilya.latypov2002@yandex.ru"
+        }
+    ],
+    "require": {}
+}

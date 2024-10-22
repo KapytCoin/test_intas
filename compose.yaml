@@ -1,0 +1,49 @@
+version: '3.8'
+
+networks:
+    internal:
+
+services:
+    nginx:
+        image: nginx:latest
+        container_name: nginx
+        ports:
+          - "8080:80"
+        volumes:
+          - /home/ilya/VsCodeProjects/Intas_test:/var/www
+          - /home/ilya/VsCodeProjects/Intas_test/docker/nginx:/etc/nginx/conf.d
+          - /home/ilya/VsCodeProjects/Intas_test/logs/nginx:/var/log/nginx
+        depends_on:
+          - phpfpm
+          - database
+        networks:
+          - internal
+
+    phpfpm:
+        build:
+          context: /home/ilya/VsCodeProjects/Intas_test/docker/phpfpm
+          dockerfile: Dockerfile
+        container_name: phpfpm
+        volumes:
+          - /home/ilya/VsCodeProjects/Intas_test:/var/www
+          - /home/ilya/VsCodeProjects/Intas_test/docker/phpfpm:/usr/local/etc/php/php.ini
+        ports:
+          - "9000:9000"
+        networks:
+          - internal
+
+    database:
+      container_name: postgres_intas
+      image: postgres
+      restart: unless-stopped
+      environment:
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: 123
+        POSTGRES_HOST_AUTH_METHOD:
+      ports:
+        - "5434:5432"
+      volumes:
+        - /home/ilya/VsCodeProjects/Intas_test/docker/postgres:/var/lib/postgres
+        - /home/ilya/VsCodeProjects/Intas_test/logs/pgsql:/var/log/pgsql
+      networks:
+        - internal
