@@ -14,7 +14,8 @@ final class ConnectionService
 
     public function connect(): PDO
     {
-        $dsn = 'pgsql:host=db8b0ad31978;port=5432;dbname=postgres';
+        // В host= нужно указать hostname или container_id постгрес контейнера 
+        $dsn = 'pgsql:host=6dda9e43e65c;port=5432;dbname=postgres';
         $user = 'postgres';
         $password = '123';
 
