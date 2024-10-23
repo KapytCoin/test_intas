@@ -15,28 +15,25 @@ class CreateDatabaseService
     public function createTables()
     {
         $sqlCouriers =  "CREATE TABLE couriers (
-                        id SERIAL NOT NULL,
-                        name VARCHAR(255) NOT NULL,
-                        PRIMARY KEY (id)
+                        id SERIAL PRIMARY KEY,
+                        name VARCHAR(255)
                         );";
                 
         $sqlRegions = "CREATE TABLE regions (
-                      id SERIAL NOT NULL,
-                      title VARCHAR(255) NOT NULL,
-                      there INT NOT NULL,
-                      back INT NOT NULL,
-                      PRIMARY KEY (id)
-                      );";
+                    id SERIAL PRIMARY KEY,
+                    title VARCHAR(255),
+                    there INT NOT NULL,
+                    back INT NOT NULL
+                    );";
                 
         $sqlTrips = "CREATE TABLE trips (
-                    id SERIAL NOT NULL,
+                    id SERIAL PRIMARY KEY,
                     name_id INT NOT NULL,
                     title_id INT NOT NULL,
                     departure_time TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL,
                     arrival_time TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL,
-                    PRIMARY KEY (id),
-                    CONSTRAINT FK_AA7370DAB162CC12 FOREIGN KEY (name_id) REFERENCES couriers (id) NOT DEFERRABLE INITIALLY IMMEDIATE,
-                    CONSTRAINT FK_AA7370DABFB52820 FOREIGN KEY (title_id) REFERENCES regions (id) NOT DEFERRABLE INITIALLY IMMEDIATE
+                    CONSTRAINT FK_NAME FOREIGN KEY (name_id) REFERENCES couriers (id),
+                    CONSTRAINT FK_TITLE FOREIGN KEY (title_id) REFERENCES regions (id)
                     );";
         
         $this->pdo->exec($sqlCouriers);
