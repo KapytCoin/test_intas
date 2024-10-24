@@ -30,8 +30,8 @@ class CreateDatabaseService
                     id SERIAL PRIMARY KEY,
                     name_id INT NOT NULL,
                     title_id INT NOT NULL,
-                    departure_time TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL,
-                    arrival_time TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL,
+                    departure_time TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NOW() NOT NULL,
+                    arrival_time TIMESTAMP(0) WITHOUT TIME ZONE,
                     CONSTRAINT FK_NAME FOREIGN KEY (name_id) REFERENCES couriers (id),
                     CONSTRAINT FK_TITLE FOREIGN KEY (title_id) REFERENCES regions (id)
                     );";

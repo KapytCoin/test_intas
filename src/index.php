@@ -9,17 +9,11 @@ use PDOException;
 use App\Service\CreateDatabaseService;
 use App\Service\CourierService;
 
-// Временный блок
+// Временный г*вноблок
 try {
-    $name = 'Глебович Глеб Глебыч';
-
     $pdo = ConnectionService::get()->connect();
-    echo 'Успешное соединение';
 
     $creatDb = new CreateDatabaseService($pdo);
-    $test = new CourierService($pdo);
-
-    $test->newCourier($name);
     $creatDb->createTables();
     $creatDb->loadFixtures();
 } catch (PDOException $e) {
@@ -27,7 +21,9 @@ try {
         try {
             $pdo = ConnectionService::get()->connect();
 
+            $test = new CourierService($pdo);
             $creatDb = new CreateDatabaseService($pdo);
+            
             $creatDb->createTables();
             $creatDb->loadFixtures();
         } catch (PDOException $e) {
