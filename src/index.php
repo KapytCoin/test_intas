@@ -13,7 +13,9 @@ use App\Service\CourierService;
 try {
     $pdo = ConnectionService::get()->connect();
 
+    $test = new CourierService($pdo);
     $creatDb = new CreateDatabaseService($pdo);
+    
     $creatDb->createTables();
     $creatDb->loadFixtures();
 } catch (PDOException $e) {
