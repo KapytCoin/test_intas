@@ -3,9 +3,8 @@
 namespace App\Service;
 
 use PDO;
-use PDOException;
-   
-// г*внокод получился ;)
+
+// ну и г*внокод получился xD
 class CourierService
 {
     private $pdo;
@@ -15,16 +14,25 @@ class CourierService
         $this->pdo = $pdo;
     }
 
-    // после загрузки скрипта фикстур мудит autoincrement поэтому надо написать костыли для запросов 
     public function newCourier(string $name): bool
     {
-        $sql = "INSERT INTO couriers (name) VALUES (:name);";
+        $sqlFindLastId = "SELECT MAX(id) FROM couriers;";
+
+        $stmtFind = $this->pdo->prepare($sqlFindLastId);
+        $stmtFind->execute();
+
+        $arrayId = $stmtFind->fetch();
+        $lastId = $arrayId[0];
+        ++$lastId;
+
+        $sql = "INSERT INTO couriers (id, name) VALUES (:id, :name);";
 
         $stmt = $this->pdo->prepare($sql);
 
+        $stmt->bindParam(':id', $lastId, PDO::PARAM_INT);
         $stmt->bindParam(':name', $name, PDO::PARAM_STR);
         $result = $stmt->execute();
-
+        
         if ($result) {
             return true;
         } else {
@@ -34,10 +42,20 @@ class CourierService
 
     public function newRegion(string $title, int $there, int $back)
     {
-        $sql = "INSERT INTO regions (title, there, back) VALUES (:title, :there, :back);";
+        $sqlFindLastId = "SELECT MAX(id) FROM regions;";
+
+        $stmtFind = $this->pdo->prepare($sqlFindLastId);
+        $stmtFind->execute();
+
+        $arrayId = $stmtFind->fetch();
+        $lastId = $arrayId[0];
+        ++$lastId;
+
+        $sql = "INSERT INTO regions (id, title, there, back) VALUES (:id, :title, :there, :back);";
 
         $stmt = $this->pdo->prepare($sql);
 
+        $stmt->bindParam(':id', $lastId, PDO::PARAM_INT);
         $stmt->bindParam(':title', $title, PDO::PARAM_STR);
         $stmt->bindParam(':there', $there, PDO::PARAM_INT);
         $stmt->bindParam(':back', $back, PDO::PARAM_INT);
@@ -53,13 +71,23 @@ class CourierService
     // timestamp это -5 часов относительно нашего региона
     public function newTrip(string $name, string $title): bool
     {
-        $sqlInsert = "INSERT INTO trips (name_id, title_id) VALUES (:name_id, :title_id);";
+        $sqlFindLastId = "SELECT MAX(id) FROM trips;";
+
+        $stmtFind = $this->pdo->prepare($sqlFindLastId);
+        $stmtFind->execute();
+
+        $arrayId = $stmtFind->fetch();
+        $lastId = $arrayId[0];
+        ++$lastId;
+
+        $sqlInsert = "INSERT INTO trips (id, name_id, title_id) VALUES (:id, :name_id, :title_id);";
 
         $stmtInsert = $this->pdo->prepare($sqlInsert);
 
         $nameId = $this->getCourierId($name);
         $titleId = $this->getRegionId($title);
 
+        $stmtInsert->bindParam(':id', $lastId, PDO::PARAM_INT);
         $stmtInsert->bindParam(':name_id', $nameId, PDO::PARAM_INT);
         $stmtInsert->bindParam(':title_id', $titleId, PDO::PARAM_INT);
         $stmtInsert->execute();
