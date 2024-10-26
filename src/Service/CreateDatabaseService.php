@@ -2,7 +2,6 @@
 
 namespace App\Service;
 
-/** Фикстуры заполнял руками, поэтому могут быть неточности xD */
 class CreateDatabaseService
 {
     private $pdo;
