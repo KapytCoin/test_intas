@@ -194,4 +194,30 @@ class CourierService
         
         return $resArr;
     }
+
+    public function getCountRegion(): array
+    {
+        $sql = "SELECT title FROM regions;";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $array[] = $row;
+        }
+        return $array;
+    }
+
+    public function getRegion(): array
+    {
+        $sql = "SELECT title FROM regions";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+        
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $array[] = $row[0];
+        }
+        return $array;
+    }
 }
